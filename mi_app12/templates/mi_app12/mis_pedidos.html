@@ -1,0 +1,53 @@
+{% extends 'mi_app12/base.html' %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 30px auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); font-family: sans-serif;">
+    <h2 style="color: #333; margin-bottom: 25px; border-bottom: 2px solid #eee; padding-bottom: 10px;">Mis Pedidos - {{ restaurante_nombre }}</h2>
+
+    {% if pedidos %}
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+                <tr style="background-color: #f8f9fa; text-align: left; border-bottom: 2px solid #dee2e6;">
+                    <th style="padding: 12px;">ID Pedido</th>
+                    <th style="padding: 12px;">Fecha</th>
+                    <th style="padding: 12px; text-align: center;">Estado</th>
+                    <th style="padding: 12px; text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in pedidos %}
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px; font-weight: bold; color: #333;">#{{ p.id }}</td>
+                    <td style="padding: 12px; color: #555;">{{ p.fecha }}</td>
+                    
+                    <td style="padding: 12px; text-align: center;">
+                        {% if p.enviado %}
+                            <span style="display: inline-block; background: #d4edda; color: #155724; padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: bold;">Enviado</span>
+                        {% else %}
+                            <span style="display: inline-block; background: #fff3cd; color: #856404; padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: bold;">Pendiente de envío</span>
+                        {% endif %}
+                    </td>
+
+                    <td style="padding: 12px; text-align: center;">
+                        <a href="{% url 'detalle_pedido' p.id %}" style="display: inline-block; background: #007bff; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 14px; font-weight: bold;">Ver Detalle</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Enlaces de navegación inferiores -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+            <a href="{% url 'listar_categorias' %}" style="color: #007bff; text-decoration: none; font-weight: bold;">← Volver a Categorías</a>
+        </div>
+
+    {% else %}
+        <div style="background-color: #e9ecef; color: #495057; padding: 20px; text-align: center; border-radius: 5px; margin-bottom: 20px;">
+            No tienes ningún pedido registrado todavía.
+        </div>
+        <div style="text-align: center;">
+            <a href="{% url 'listar_categorias' %}" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Hacer un pedido</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'mi_app12/base.html' %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 30px auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); font-family: sans-serif;">
+    
+    <h2 style="color: #28a745; margin-bottom: 25px; border-bottom: 2px solid #eee; padding-bottom: 10px;">¡Pedido Confirmado y Correo Generado!</h2>
+
+    <!-- Caja de información del simulador de correo -->
+    <div style="background-color: #e2f0d9; border: 1px solid #c3e6cb; color: #155724; padding: 20px; border-radius: 6px; margin-bottom: 25px;">
+        <p style="margin: 0 0 10px 0;"><strong>Correo emitido por:</strong> {{ remitente }}</p>
+        <p style="margin: 0 0 10px 0;"><strong>Enviado al destinatario:</strong> {{ destinatario }}</p>
+        <p style="margin: 0;"><strong>Asociado al pedido:</strong> #{{ pedido.id }}</p>
+    </div> 
+
+    <h3 style="color: #333; margin-top: 20px; margin-bottom: 15px;">Detalle de Productos Solicitados</h3>
+    
+    <!-- Tabla con la lista de lo que se ha pedido -->
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px;">
+        <thead>
+            <tr style="background-color: #f8f9fa; text-align: left; border-bottom: 2px solid #dee2e6;">
+                <th style="padding: 10px;">Producto</th>
+                <th style="padding: 10px; text-align: center;">Unidades</th>
+                <th style="padding: 10px; text-align: right;">Precio Unitario</th>
+                <th style="padding: 10px; text-align: right;">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for linea in lineas %}
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 10px; color: #333;">{{ linea.producto.nombre }}</td>
+                <td style="padding: 10px; text-align: center; font-weight: bold;">{{ linea.unidades }}</td>
+                <td style="padding: 10px; text-align: right;">{{ linea.producto.precio }} €</td>
+                <td style="padding: 10px; text-align: right; font-weight: bold; color: #28a745;">{{ linea.subtotal }} €</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 25px; border: 1px solid #dee2e6;">
+        <p style="margin: 0 0 8px 0; color: #333;"><strong>Fecha de emisión:</strong> {{ pedido.fecha }}</p>
+        <p style="margin: 0; color: #333;"><strong>Estado actual:</strong> 
+            {% if pedido.enviado %} 
+                <span style="color: #28a745; font-weight: bold;">Enviado</span> 
+            {% else %} 
+                <span style="color: #ffc107; font-weight: bold;">Pendiente de envío</span> 
+            {% endif %}
+        </p>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 20px; margin-top: 30px;">
+        <div>
+            <a href="{% url 'listar_mis_pedidos' %}" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-right: 10px;">Ver Mis Pedidos</a>
+        </div>
+        <div>
+            <a href="{% url 'detalle_pedido' pedido.id %}" style="background-color: #6c757d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Ver Detalle Completo</a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

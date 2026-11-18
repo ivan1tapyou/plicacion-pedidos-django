@@ -1,0 +1,67 @@
+{% extends 'mi_app12/base.html' %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 30px auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); font-family: sans-serif;">
+    <h2 style="color: #333; margin-bottom: 25px; border-bottom: 2px solid #eee; padding-bottom: 10px;">Tu Carrito de Pedido</h2>
+
+    {% if items %}
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+                <tr style="background-color: #f8f9fa; text-align: left; border-bottom: 2px solid #dee2e6;">
+                    <th style="padding: 12px;">Producto</th>
+                    <th style="padding: 12px; text-align: center;">Unidades</th>
+                    <th style="padding: 12px; text-align: right;">Precio Unitario</th>
+                    <th style="padding: 12px; text-align: right;">Subtotal</th>
+                    <th style="padding: 12px; text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px; font-weight: bold; color: #333;">{{ item.producto.nombre }}</td>
+                    
+                    <!-- Columna de Unidades con botones de decrementar (-) e incrementar (+) -->
+                    <td style="padding: 12px; text-align: center;">
+                        <a href="{% url 'decrementar_producto' item.producto.id %}" style="display: inline-block; background: #e9ecef; color: #333; padding: 2px 8px; text-decoration: none; border-radius: 3px; font-weight: bold; margin-right: 6px;">-</a>
+                        <span style="display: inline-block; min-width: 20px; font-weight: bold;">{{ item.unidades }}</span>
+                        <a href="{% url 'incrementar_producto' item.producto.id %}" style="display: inline-block; background: #e9ecef; color: #333; padding: 2px 8px; text-decoration: none; border-radius: 3px; font-weight: bold; margin-left: 6px;">+</a>
+                    </td>
+
+                    <td style="padding: 12px; text-align: right;">{{ item.producto.precio }} €</td>
+                    <td style="padding: 12px; text-align: right; font-weight: bold; color: #28a745;">{{ item.subtotal }} €</td>
+                    <td style="padding: 12px; text-align: center;">
+                        <a href="{% url 'eliminar_del_carrito' item.producto.id %}" style="color: #dc3545; text-decoration: none; font-size: 14px; font-weight: bold;">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Total General -->
+        <div style="text-align: right; margin-top: 20px; font-size: 18px; font-weight: bold; color: #333;">
+            Total General: <span style="color: #007bff;">{{ total_general }} €</span>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+            <div>
+                <a href="{% url 'vaciar_carrito' %}" style="margin-right: 15px; color: #6c757d; text-decoration: none;">Vaciar Carrito</a>
+                <a href="{% url 'listar_categorias' %}" style="color: #007bff; text-decoration: none;">Seguir Comprando</a>
+            </div>
+            
+            <form action="{% url 'confirmar_pedido' %}" method="POST" style="margin: 0;">
+                {% csrf_token %}
+                <button type="submit" style="background-color: #28a745; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; font-weight: bold;">Confirmar Pedido</button>
+            </form>
+        </div>
+
+    {% else %}
+        <div style="background-color: #e9ecef; color: #495057; padding: 20px; text-align: center; border-radius: 5px; margin-bottom: 20px;">
+            Tu carrito está vacío actualmente.
+        </div>
+        <div style="text-align: center;">
+            <a href="{% url 'listar_categorias' %}" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Ver Categorías y Comprar</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

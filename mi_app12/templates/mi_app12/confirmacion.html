@@ -1,0 +1,19 @@
+{% extends 'mi_app12/base.html' %}
+
+{% block title %}Pedido Confirmado{% endblock %}
+
+{% block content %}
+<div class="container" style="text-align: center;">
+    <h1 style="color: #16a34a; border-bottom: none;">¡Pedido Confirmado con Éxito!</h1>
+    
+    <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 15px; border-radius: 8px; margin: 20px 0; font-weight: 600;">
+        {{ mensaje }}
+    </div>
+
+    <p style="color: #475569; margin-bottom: 30px;">
+        Su pedido se ha registrado correctamente en la base de datos y se han enviado las notificaciones por correo electrónico correspondientes.
+    </p>
+
+    <a href="{% url 'listar_categorias' %}" style="background-color: #4f46e5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block;">Volver al Catálogo de Categorías</a>
+</div>
+{% endblock %}
