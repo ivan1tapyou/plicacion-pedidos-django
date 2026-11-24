@@ -16,7 +16,9 @@ Including another URLconf
 """
 
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path('', include('mi_app12.urls')),
+    path("", RedirectView.as_view(url="/login/", permanent=False)),
 ]
