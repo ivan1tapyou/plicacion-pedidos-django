@@ -23,9 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-=gika4qlz(r92bs!8fm!bauf3m@lp8is9$-k(59((l8&lz%xpj'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["ivan.daw.corellafp.es", "31.70.152.234", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = [
+    "ivan.daw.corellafp.es",
+    "31.70.152.234",
+]
 
 
 # Application definition
@@ -127,3 +130,24 @@ DEFAULT_FROM_EMAIL = 'no-reply@miempresa.com'
 SESSION_COOKIE_AGE = 1800  # 1800 segundos = 30 minutos
 SESSION_SAVE_EVERY_REQUEST = True  # Renueva el tiempo de caducidad con cada interacción del usuario
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Opcional: si prefieres que expire aunque el navegador siga abierto
+
+# --- SEGURIDAD HTTPS / PROXY INVERSO (FASE 3) ---
+# Solo porque Nginx establece y controla X-Forwarded-Proto con $scheme
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://ivan.daw.corellafp.es",
+]
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"
+SECURE_REFERRER_POLICY = "same-origin"
+
+# Redirigir HTTP a HTTPS (activar tras comprobar que HTTPS funciona correctamente)
+SECURE_SSL_REDIRECT = True
+
+# HSTS inicial corto y prudente (5 minutos); sin includeSubDomains ni preload
+SECURE_HSTS_SECONDS = 300
